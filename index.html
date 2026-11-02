@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>MORIN</title>
+<link rel="stylesheet" href="css/morin.css">
+</head>
+<body>
+
+
+
+<div id="chrome"></div>
+
+<main id="top">
+  <!-- ЭКРАН 1 -->
+  <section class="hero" aria-labelledby="h1">
+    <img class="hero__photo" src="img/corridor-coat.jpg" alt="Модель в длинном пальто MORIN 02 стоит в бетонном коридоре бэкстейджа">
+    <div class="hero__glitch" aria-hidden="true"></div>
+    <div class="hero__glitch hero__glitch--r" aria-hidden="true"></div>
+    <div class="hero__scan" aria-hidden="true"></div>
+    <div class="hero__grain"></div>
+    <div class="hero__shade"></div>
+    <img class="enso" src="img/enso-red.webp" alt="">
+    <span class="ink-edge ink-edge--hero" aria-hidden="true"></span>
+    <svg class="reg reg--tl" aria-hidden="true"><use href="#reg"/></svg>
+    <svg class="reg reg--tr" aria-hidden="true"><use href="#reg"/></svg>
+    <svg class="datestamp" id="datestamp" role="img" aria-label="Дата релиза: 12 декабря 2026"></svg>
+    <svg class="reg reg--bl" aria-hidden="true"><use href="#reg"/></svg>
+    <svg class="reg reg--br" aria-hidden="true"><use href="#reg"/></svg>
+
+    <div class="hero__content">
+      <div class="wrap">
+        <h1 id="h1">Тонко, но насквозь</h1>
+        <p class="hero__lead">400 лет назад в Эдо яркое было под запретом. Купцы надевали тёмные хаори, а изнутри пришивали шёлк: пейзажи, сцены из старых историй, целые картины. Увидеть их можно было лишь на миг, когда человек шёл и пола накидки отворачивалась.</p>
+        <p class="hero__saying">В Японии есть поговорка: <span lang="ja">能ある鷹は爪を隠す</span> — «Умный ястреб прячет когти».</p>
+        <div class="hero__actions">
+          <a class="btn btn--solid" href="catalog.html">Смотреть коллекцию</a>
+          <a class="btn btn--light" href="#drop">В лист ожидания</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="doc">
+      <dl>
+        <dt>Релиз</dt><dd>Drop 01 ENSO, 12.12.26</dd>
+        <dt>На фото</dt><dd>Пальто MORIN 02</dd>
+        <dt>Состав</dt><dd>шерсть 92%, кашемир 8%</dd>
+        <dt>Тираж</dt><dd>120 шт, без повторов</dd>
+      </dl>
+      <img class="stamp" src="img/seal-moriform.webp" alt="Печать MORIN: иероглифы 森 и 形 — «мори» и «форма»">
+    </div>
+  </section>
+
+  <!-- ЭКРАН 2 -->
+  <section class="paper" id="collection" aria-labelledby="col-h">
+    <span class="ink-edge" aria-hidden="true"></span>
+    <div class="wrap col">
+      <div class="col__head">
+        <div>
+          <h2 id="col-h">Коллекция</h2>
+          <p>Строгие силуэты, а рядом шёлк, фатин и металл. Красная печать на карточке — вещь из Drop 01 ENSO.</p>
+        </div>
+        <div class="filters" role="group" aria-label="Категории" id="filters"></div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="col__more"><a class="btn btn--ink" href="catalog.html">Смотреть коллекцию</a></div>
+    </div>
+  </section>
+  <!-- ДРОП ENSO -->
+  <section class="drop" id="drop" aria-labelledby="drop-h">
+    <span class="ink-edge ink-edge--up" aria-hidden="true"></span>
+    <div class="wrap drop__grid">
+      <figure class="drop__photo">
+        <span class="film" aria-hidden="true"><i></i><i></i><i></i></span>
+        <img src="img/corridor-woman.jpg" alt="Модель в чёрном пальто нараспашку посреди коридора бэкстейджа">
+        <img class="stamp" src="img/seal-gentei.webp" alt="Печать 限定: ограниченный выпуск">
+      </figure>
+      <div>
+        <p class="drop__kicker">Drop 01 — первая коллекция</p>
+        <h2 class="drop__title" id="drop-h" aria-label="ENSO">ENS<img src="img/logo-enso-o.webp" alt=""></h2>
+        <p class="drop__lead">Энсо рисуют тушью одним движением, на одном выдохе, и никогда не исправляют. Так собрана первая коллекция: четыре вещи, 120 штук, без повторов. Лист ожидания откроет её на сутки раньше.</p>
+        <div class="count" id="count" role="timer" aria-label="До релиза Drop 01 ENSO"></div>
+        <div class="wait" id="wait">
+          <img class="uketsuke" src="img/seal-uketsuke.webp" alt="">
+          <form id="waitForm" novalidate>
+            <label for="wName">Имя<span class="field"><input id="wName" name="name" autocomplete="given-name" placeholder="Надежда"></span></label>
+            <label for="wTg">Telegram или телефон<span class="field"><input id="wTg" name="tg" placeholder="@username"></span></label>
+            <p class="wait__err" id="wErr" role="alert"></p>
+            <button class="btn btn--solid" type="submit">В лист ожидания</button>
+          </form>
+          <p class="wait__ok" id="wOk" hidden>Заявка принята. Доступ к ENSO придёт за сутки до релиза.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ФОРМА -->
+  <section class="paper form-sec to-dark" id="silhouette" aria-labelledby="form-h">
+    <span class="ink-edge ink-edge--flip" aria-hidden="true"></span>
+    <div class="wrap col">
+      <div class="col__head">
+        <div>
+          <h2 id="form-h">Держит линию</h2>
+          <p>Сначала линия: плечо, длина, пропорция. Потом то, что с ней спорит, — фатин, шёлк, кожа, металл. Спорят нарочно.</p>
+        </div>
+      </div>
+      <div class="tri">
+        <figure><span class="ph"><img src="img/coat-long-d1.jpg" alt="Плечо и лацкан тёмного шерстяного пальто"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span></span><figcaption><h3>Крой</h3><p>Плечо держит всё остальное</p></figcaption></figure>
+        <figure><span class="ph"><img src="img/corset-d1.jpg" alt="Кожаный корсет и юбка из чёрного фатина"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span></span><figcaption><h3>Фактура</h3><p>Фатин рядом с кожей. Так и задумано</p></figcaption></figure>
+        <figure><span class="ph"><img src="img/dress-d1.jpg" alt="Спина в чёрном шёлковом платье с открытыми плечами"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span></span><figcaption><h3>Посадка</h3><p>Свободно, но без случайных складок</p></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЛЮДИ (громко) -->
+  <section class="dark" id="people" aria-labelledby="people-h">
+    <span class="ink-edge ink-edge--up ink-edge--flip" aria-hidden="true"></span>
+    <div class="wrap dark__in">
+      <div class="col__head">
+        <div>
+          <h2 id="people-h">Свои люди</h2>
+          <p>Фотографы, музыканты, стилисты — те, кто узнаёт своих по деталям. Рассказывают, в чём ходят и почему.</p>
+        </div>
+      </div>
+      <div class="people">
+        <article class="person"><a class="ph" href="#people"><img src="img/jumpsuit.jpg" alt="К., фотограф, в комбинезоне MORIN 03 на ночной парковке"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span></a><h3>K., фотограф</h3><a class="more" href="#people">Читать историю</a></article>
+        <article class="person"><a class="ph" href="#people"><img src="img/corridor-coat-d2.jpg" alt="А., арт-директор, в пальто MORIN 02, вид со спины"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span></a><h3>А., арт-директор</h3><a class="more" href="#people">Читать историю</a></article>
+        <article class="person"><a class="ph" href="#people"><img src="img/body-d2.jpg" alt="М., музыкант, портрет в боди MORIN 06"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span></a><h3>М., музыкант</h3><a class="more" href="#people">Читать историю</a></article>
+        <article class="person"><a class="ph" href="#people"><img src="img/coat-long.jpg" alt="Л., стилист, в длинном пальто MORIN 01"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span></a><h3>Л., стилист</h3><a class="more" href="#people">Читать историю</a></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЭКСТЕЙДЖ (тихо) -->
+  <section class="paper to-dark" id="backstage" aria-labelledby="bs-h">
+    <span class="ink-edge" aria-hidden="true"></span>
+    <div class="wrap col">
+      <div class="col__head">
+        <div>
+          <h2 id="bs-h">Бэкстейдж</h2>
+          <p>Примерки, булавки, обрезки ткани. Как вещь становится собой, пока её никто не видит.</p>
+        </div>
+      </div>
+      <ol class="notes">
+        <li><span class="ph"><img src="img/coat-long-d2.jpg" alt="Рука у полы длинного пальто на примерке"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="notes__n">01</span><h3>Где кончается плечо — примерка пальто</h3></li>
+        <li><span class="ph"><img src="img/corset-d2.jpg" alt="Юбка из чёрного фатина крупным планом"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="notes__n">02</span><h3>Фатин против кожи — первый тест</h3></li>
+        <li><span class="ph ph--seal"><img class="notes__seal" src="img/seal-gentei.webp" alt="Оттиск красной печати 限定 на рисовой бумаге"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="notes__n">03</span><h3>Красная печать — как её ставят</h3></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- МАНИФЕСТ (громкий акцент) -->
+  <section class="dark manifest" aria-labelledby="man-h">
+    <span class="ink-edge ink-edge--up" aria-hidden="true"></span>
+    <div class="wrap dark__in">
+      <h2 class="manifest__h" id="man-h">Оставь <span class="strike">лишнее<img src="img/strike-red.webp" alt=""></span></h2>
+      <p class="manifest__p">Лишнее — это случайное. Шёлк и фатин здесь не случайно.</p>
+    </div>
+  </section>
+
+  <!-- FAQ (тихо) -->
+  <section class="paper to-dark" id="faq" aria-labelledby="faq-h">
+    <span class="ink-edge ink-edge--flip" aria-hidden="true"></span>
+    <div class="wrap col faq">
+      <h2 id="faq-h">Вопросы</h2>
+      <div class="faq__list">
+        <details><summary>Это мужское или женское?</summary><p>Основа — унисекс. Женские модели отмечены в карточке.</p></details>
+        <details><summary>Можно примерить?</summary><p>Магазин работает онлайн. Перед заказом можно написать в Telegram — подскажем размер и посадку.</p></details>
+        <details><summary>Будут повторы?</summary><p>Вещи из дропа не повторяются. Следующий дроп — другие вещи.</p></details>
+        <details><summary>Как выбрать размер?</summary><p>В карточке есть таблица размеров и замеры вещи. Сомнения — пишите в Telegram.</p></details>
+        <details><summary>Как с доставкой?</summary><p>Курьером или в пункт выдачи. Срок и цену видно при оформлении.</p></details>
+        <details><summary>Можно вернуть?</summary><p>Да, если вещь не подошла. Условия — в оферте.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ФИНАЛ (громко) + ПОДВАЛ -->
+  <section class="dark final" aria-labelledby="fin-h">
+    <span class="ink-edge ink-edge--up ink-edge--flip" aria-hidden="true"></span>
+    <div class="wrap dark__in final__in">
+      <svg class="final__date" id="finalDate" role="img" aria-label="Дата релиза: 12 декабря 2026"></svg>
+      <h2 class="final__h" id="fin-h">Свои заметят</h2>
+      <p class="final__p">Drop 01 ENSO — 12.12.26. Лист ожидания откроет его на сутки раньше.</p>
+      <a class="btn btn--solid" href="#drop">В лист ожидания</a>
+    </div>
+    <footer class="foot" data-foot></footer>
+  </section>
+</main>
+
+
+<script src="js/morin.js" charset="utf-8"></script>
+<script>
+const {seg7,countdown,PRODUCTS,card,$}=MORIN;
+seg7($('#datestamp'),"'26 12 12");
+seg7($('#finalDate'),"'26 12 12");
+countdown($('#count'));
+
+// коллекция на главной: четыре вещи, фильтр по категориям
+const cats=['Все','Верхняя одежда','Платья','Комбинезоны','Боди','Аксессуары'];
+let cur='Все';
+function renderFilters(){$('#filters').innerHTML=cats.map(c=>`<button class="chip" type="button" aria-pressed="${c===cur}" data-c="${c}">${c}</button>`).join('')}
+function renderGrid(){$('#grid').innerHTML=PRODUCTS.filter(p=>cur==='Все'||p.cat===cur).sort((a,b)=>a.n-b.n).slice(0,4).map(card).join('')}
+$('#filters').addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(!b)return;cur=b.dataset.c;renderFilters();renderGrid()});
+renderFilters();renderGrid();
+
+// лист ожидания
+$('#waitForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const n=$('#wName').value.trim(),t=$('#wTg').value.trim();
+  if(!n){$('#wErr').textContent='Нужно имя';$('#wName').focus();return}
+  if(t.length<3){$('#wErr').textContent='Нужен Telegram или телефон — туда придёт доступ';$('#wTg').focus();return}
+  $('#wErr').textContent='';$('#wait').classList.add('is-done');$('#wOk').hidden=false;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Релизы — MORIN</title>
+<link rel="stylesheet" href="css/morin.css">
+</head>
+<body>
+<div id="chrome"></div>
+<main>
+<section class="ptop"><div class="wrap ptop__in"><h1 id="ph1">Релизы</h1><p class="ptop__sub" id="psub">Каждый дроп выходит один раз</p></div></section>
+<section class="paper to-dark "><span class="ink-edge" aria-hidden="true"></span><div class="wrap col">
+<article class="rel" aria-labelledby="r1">
+  <figure class="ph rel__photo" style="margin:0"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span><img src="img/corridor-woman.jpg" alt="Drop 01 ENSO: модель в чёрном пальто в коридоре бэкстейджа"><img class="gentei" src="img/seal-gentei.webp" alt="Печать 限定"></figure>
+  <div>
+    <div class="status" aria-label="Статус релиза"><span class="on">Скоро</span><span>Вышел</span><span>Закончился</span></div>
+    <h2 class="rel__t" id="r1" aria-label="Drop 01 ENSO"><small>Drop 01</small>ENS<img src="img/logo-enso-o.webp" alt=""></h2>
+    <p class="rel__meta"><span>12.12.26</span><span>4 вещи</span><span>120 шт</span></p>
+    <div class="count" id="count" role="timer"></div>
+    <a class="btn btn--fill" href="catalog.html?avail=drop">Смотреть дроп</a>
+  </div>
+</article>
+</div></section>
+<section class="pend"><span class="ink-edge ink-edge--up ink-edge--flip" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
+</main>
+<script src="js/morin.js" charset="utf-8"></script>
+<script>
+MORIN.countdown(MORIN.$('#count'));
+</script>
+</body>
+</html>

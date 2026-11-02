@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Коллекция — MORIN</title>
+<link rel="stylesheet" href="css/morin.css">
+</head>
+<body>
+<div id="chrome"></div>
+<main>
+<section class="ptop"><div class="wrap ptop__in"><h1 id="ph1">Коллекция</h1><p class="ptop__sub" id="psub">Малые партии, почти без повторов</p></div></section>
+<section class="paper to-dark "><span class="ink-edge" aria-hidden="true"></span><div class="wrap col">
+<div class="tools" id="tools"></div>
+<div class="grid" id="grid"></div>
+</div></section>
+<section class="pend"><span class="ink-edge ink-edge--up ink-edge--flip" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
+</main>
+<script src="js/morin.js" charset="utf-8"></script>
+<script>
+
+const {PRODUCTS,card,$,$$}=MORIN;
+const SIZES=['XS','S','M','L','XL','One size'];
+const COLORS=[...new Set(PRODUCTS.map(p=>p.color))];
+const AVAIL=['В наличии','Скоро в дропе'];
+const SORTS=['Сначала новые','Сначала дроп','По цене'];
+const st={size:new Set(),color:new Set(),avail:new Set(),sort:'Сначала новые'};
+if(new URLSearchParams(location.search).get('avail')==='drop')st.avail.add('Скоро в дропе');
+const av=p=>p.drop?'Скоро в дропе':'В наличии';
+function list(){
+  let l=PRODUCTS.filter(p=>(!st.size.size||p.sizes.some(s=>st.size.has(s)))&&(!st.color.size||st.color.has(p.color))&&(!st.avail.size||st.avail.has(av(p))));
+  const by={'Сначала новые':(a,b)=>a.n-b.n,'Сначала дроп':(a,b)=>(b.drop-a.drop)||a.n-b.n,'По цене':(a,b)=>a.price-b.price}[st.sort];
+  return l.sort(by)}
+const word=n=>n%10===1&&n%100!==11?'вещь':(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20))?'вещи':'вещей';
+function dd(key,label,vals){
+  const k=st[key].size;
+  return `<details class="dd" data-k="${key}"><summary class="chip">${label}${k?`<b>· ${k}</b>`:''}</summary><div class="dd__panel">${vals.map(v=>`<button class="chip sm" type="button" data-k="${key}" data-v="${v}" aria-pressed="${st[key].has(v)}">${v}</button>`).join('')}</div></details>`}
+function render(){
+  const open=$('.dd[open]')?.dataset.k;
+  const any=st.size.size+st.color.size+st.avail.size;
+  const l=list();
+  $('#tools').innerHTML=`<div class="tools__f">${dd('size','Размер',SIZES)}${dd('color','Цвет',COLORS)}${dd('avail','Наличие',AVAIL)}${any?'<button class="link reset" type="button" data-reset>Сбросить фильтры</button>':''}<span class="tools__n">${l.length} ${word(l.length)}</span></div>
+  <details class="dd dd--r" data-k="sort"><summary class="chip">${st.sort}</summary><div class="dd__panel dd__panel--list" role="menu">${SORTS.map(s=>`<button class="opt" type="button" role="menuitemradio" data-sort="${s}" aria-checked="${s===st.sort}">${s}</button>`).join('')}</div></details>`;
+  if(open&&open!=='sort'){const d=$(`.dd[data-k="${open}"]`);if(d)d.open=true}
+  $('#grid').innerHTML=l.length?l.map(card).join(''):`<div class="empty"><h3>Ничего не нашлось</h3><button class="btn btn--ink" type="button" data-reset>Сбросить фильтры</button></div>`;
+}
+document.addEventListener('click',e=>{
+  const v=e.target.closest('[data-v]');
+  if(v){const s=st[v.dataset.k];s.has(v.dataset.v)?s.delete(v.dataset.v):s.add(v.dataset.v);render();return}
+  const so=e.target.closest('[data-sort]');
+  if(so){st.sort=so.dataset.sort;render();return}
+  if(e.target.closest('[data-reset]')){st.size.clear();st.color.clear();st.avail.clear();render();return}
+  if(!e.target.closest('.dd'))$$('.dd[open]').forEach(d=>d.open=false);
+});
+document.addEventListener('toggle',e=>{if(e.target.matches?.('.dd')&&e.target.open)$$('.dd[open]').forEach(d=>{if(d!==e.target)d.open=false})},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.dd[open]').forEach(d=>d.open=false)});
+render();
+
+</script>
+</body>
+</html>

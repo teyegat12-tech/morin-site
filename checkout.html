@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Оформление — MORIN</title>
+<link rel="stylesheet" href="css/morin.css">
+</head>
+<body>
+<div id="chrome"></div>
+<main>
+<section class="ptop"><div class="wrap ptop__in"><h1 id="ph1">Оформление</h1><p class="ptop__sub" id="psub">Без лишних шагов</p></div></section>
+<section class="paper to-dark "><span class="ink-edge" aria-hidden="true"></span><div class="wrap col">
+<div id="cov"></div>
+</div></section>
+<section class="pend"><span class="ink-edge ink-edge--up ink-edge--flip" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
+</main>
+<script src="js/morin.js" charset="utf-8"></script>
+<script>
+
+const {byId,rub,$,$$,seg7}=MORIN;
+const fail=new URLSearchParams(location.search).get('pay')==='fail';
+const f=(id,label,type='text',ph='',full=false,auto='')=>`<label class="pf${full?' full':''}" for="${id}">${label}<span class="field">${type==='area'?`<textarea id="${id}" name="${id}" placeholder="${ph}"></textarea>`:`<input id="${id}" name="${id}" type="${type}" placeholder="${ph}"${auto?` autocomplete="${auto}"`:''}>`}</span><span class="pf__err" id="${id}Err" role="alert"></span></label>`;
+const pick=(name,vals)=>`<div class="pick" role="radiogroup">${vals.map(v=>`<label><input type="radio" name="${name}" value="${v}"><span class="chip">${v}</span></label>`).join('')}</div><p class="fs__err" id="${name}Err" role="alert"></p>`;
+function summary(){const c=MORIN.cart,total=c.reduce((s,x)=>s+byId(x.id).price*x.qty,0);
+  return `<aside class="sum" aria-label="Заказ"><h2>Заказ</h2><ul class="sum__items">${c.map(x=>{const p=byId(x.id);return `<li><img src="img/${p.img}.jpg" alt=""><span><b>${p.name}</b>${x.size} · ${x.qty} шт</span><span>${rub(p.price*x.qty)}</span></li>`}).join('')}</ul>
+  <div class="sum__row"><span>Доставка</span><span>курьер или пункт выдачи</span></div>
+  <div class="sum__total"><span>Итого</span><span>${rub(total)}</span></div>
+  <button class="btn btn--fill btn--wide" type="submit" form="co">Оплатить</button>
+  <p class="sum__hint">Вопрос по размеру или посадке — ответим в Telegram</p></aside>`}
+function form(){
+  if(!MORIN.cart.length){$('#cov').innerHTML=`<div class="blank"><h2>В корзине пока пусто</h2><a class="btn btn--ink" href="catalog.html">Смотреть коллекцию</a></div>`;return}
+  $('#cov').innerHTML=`<div class="shop"><form id="co" novalidate>
+    <fieldset class="fs"><legend>Контакты</legend><div class="fs__grid">${f('name','Имя','text','Надежда',true,'name')}${f('tel','Телефон','tel','+7 900 000-00-00',false,'tel')}${f('email','Email','email','name@mail.ru',false,'email')}</div></fieldset>
+    <fieldset class="fs"><legend>Доставка</legend><div class="fs__grid">${f('city','Город','text','Москва',false,'address-level2')}${f('addr','Адрес','text','Улица, дом, квартира',false,'street-address')}${f('note','Комментарий для курьера','area','Код домофона, этаж, когда удобно',true)}</div></fieldset>
+    <fieldset class="fs"><legend>Способ доставки</legend>${pick('ship',['Курьер','Пункт выдачи'])}</fieldset>
+    <fieldset class="fs"><legend>Оплата</legend>${pick('pay',['Картой','СБП'])}</fieldset>
+  </form>${summary()}</div>`;
+  $('#co').addEventListener('submit',submit);
+  $('#co').addEventListener('input',e=>{const l=e.target.closest('.pf');if(l){l.classList.remove('bad');l.querySelector('.pf__err').textContent=''}});
+  $('#co').addEventListener('change',e=>{if(e.target.type==='radio')$('#'+e.target.name+'Err').textContent=''});
+}
+function submit(e){
+  e.preventDefault();const F=e.target;let first=null;
+  const err=(id,msg)=>{const el=$('#'+id+'Err');el.textContent=msg||'';const l=el.closest('.pf');if(l)l.classList.toggle('bad',!!msg);if(msg&&!first)first=F.querySelector(`[name="${id}"]`)};
+  const v=n=>(F.elements[n]?.value||'').trim();
+  err('name',v('name')?'':'Нужно имя');
+  err('tel',v('tel').replace(/\D/g,'').length>=11?'':'Номер неполный');
+  err('email',/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v('email'))?'':'В email ошибка');
+  err('city',v('city')?'':'Нужен город');
+  err('addr',v('addr')?'':'Нужен адрес');
+  err('ship',F.querySelector('[name=ship]:checked')?'':'Не выбран способ доставки');
+  err('pay',F.querySelector('[name=pay]:checked')?'':'Не выбран способ оплаты');
+  if(first){first.focus();return}
+  fail?failed():done();
+}
+function done(){
+  const num=String(Math.floor(100000+Math.random()*900000));
+  MORIN.cart=[];
+  $('#ph1').textContent='Заказ у нас';$('#psub').hidden=true;
+  $('#cov').innerHTML=`<div class="done">
+    <img class="done__seal" src="img/seal-uketsuke.webp" alt="Печать 受付: принято">
+    <p class="done__p" style="margin-top:0">Номер заказа — ${num.slice(0,3)} ${num.slice(3)}. Напишем, когда он поедет</p>
+    <ol class="track" aria-label="Статус заказа">${['Ожидает оплаты','Оплачен','Собираем','Передан в доставку','В пути · трек-номер','Доставлен'].map((s,i)=>`<li class="${i<2?'on':''}"${i===1?' aria-current="step"':''}>${s}</li>`).join('')}</ol>
+    <a class="btn btn--ink" href="catalog.html">Смотреть коллекцию</a></div>`;
+  scrollTo({top:0,behavior:'smooth'});
+}
+function failed(){
+  $('#ph1').textContent='Оплата не прошла';$('#psub').hidden=true;
+  $('#cov').innerHTML=`<div class="done"><p class="done__p" style="margin-top:0">Можно попробовать ещё раз или выбрать другой способ</p><p style="margin-top:36px"><button class="btn btn--fill" type="button" id="again">Попробовать снова</button></p></div>`;
+  $('#again').addEventListener('click',()=>{$('#ph1').textContent='Оформление';$('#psub').hidden=false;form()});
+  scrollTo({top:0,behavior:'smooth'});
+}
+form();
+
+</script>
+</body>
+</html>

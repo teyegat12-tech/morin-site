@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Вещь — MORIN</title>
+<link rel="stylesheet" href="css/morin.css">
+</head>
+<body>
+<div id="chrome"></div>
+<main>
+<section class="ptop ptop--short"><div class="wrap ptop__in"><p class="ptop__kick"><a href="catalog.html">Коллекция</a> / <span id="crumb"></span></p><h1 id="ph1"></h1></div></section>
+<section class="paper to-dark "><span class="ink-edge" aria-hidden="true"></span><div class="wrap col">
+<div class="prod">
+  <div class="gal" id="gal"></div>
+  <div class="info" id="info"></div>
+</div>
+<div class="more-sec"><h2 class="sec-h">С чем носить</h2><div class="grid grid--3" id="pair"></div></div>
+<div class="more-sec"><h2 class="sec-h">Ещё из коллекции</h2><div class="grid grid--3" id="moreg"></div></div>
+</div></section>
+<dialog class="sheet-dlg" id="sizes" aria-labelledby="sz-h"><div class="sheet-dlg__in">
+  <div class="sheet-dlg__top"><h2 id="sz-h">Таблица размеров</h2><button class="scroll__close" type="button" data-close aria-label="Закрыть"><svg class="seal-ico" viewBox="0 0 30 30" aria-hidden="true"><defs><mask id="dlgCut"><rect width="30" height="30" rx="4.5" fill="#fff"/><path d="M10 10l10 10M20 10L10 20" stroke="#000" stroke-width="2.2" stroke-linecap="round"/></mask></defs><rect width="30" height="30" rx="4.5" fill="currentColor" mask="url(#dlgCut)"/></svg></button></div>
+  <table class="tbl"><thead><tr><th>Размер</th><th>Грудь, см</th><th>Талия, см</th><th>Бёдра, см</th></tr></thead>
+  <tbody><tr><td>XS</td><td>82</td><td>64</td><td>88</td></tr><tr><td>S</td><td>86</td><td>68</td><td>92</td></tr><tr><td>M</td><td>90</td><td>72</td><td>96</td></tr><tr><td>L</td><td>96</td><td>78</td><td>102</td></tr><tr><td>XL</td><td>102</td><td>84</td><td>108</td></tr></tbody></table>
+</div></dialog>
+<section class="pend"><span class="ink-edge ink-edge--up ink-edge--flip" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
+</main>
+<script src="js/morin.js" charset="utf-8"></script>
+<script>
+
+const {PRODUCTS,byId,card,rub,add,$,$$,CLOCK}=MORIN;
+const p=byId(new URLSearchParams(location.search).get('id'));
+if(!p){location.replace('404.html')}
+else{
+document.title=p.name+' — MORIN';
+$('#ph1').textContent=p.name;$('#crumb').textContent=p.name;
+const shots=[p.img,p.img+'-d1',p.img+'-d2'];
+let cur=0;
+function gal(){
+  $('#gal').innerHTML=`<div class="ph gal__main"><span class="film" aria-hidden="true"><i></i><i></i><i></i></span><img src="img/${shots[cur]}.jpg" alt="${p.name}, фото ${cur+1} из 3">${p.drop?'<img class="gentei" src="img/seal-gentei.webp" alt="Печать 限定: вещь из Drop 01 ENSO">':''}</div>`+
+  shots.map((s,i)=>`<button class="ph gal__th" type="button" data-shot="${i}" aria-label="Фото ${i+1}" aria-current="${i===cur}"><img src="img/${s}.jpg" alt=""></button>`).join('')}
+gal();
+$('#gal').addEventListener('click',e=>{const b=e.target.closest('[data-shot]');if(b){cur=+b.dataset.shot;gal()}});
+let size=p.sizes.length===1?p.sizes[0]:null;
+const one=p.sizes.length===1;
+$('#info').innerHTML=`
+  <p class="info__kick"><span>${p.cat}</span>${p.drop?'<span class="tag">Drop 01 ENSO</span>':''}${p.w?'<span>Женская модель</span>':''}</p>
+  <p class="info__mat">${p.mat}</p>
+  <p class="info__price">${rub(p.price)}</p>
+  <p class="info__desc">${p.desc}</p>
+  <div class="info__lab"><span>Размер</span>${one?'':'<button class="link" type="button" id="szBtn">Таблица размеров</button>'}</div>
+  <div class="sizes" role="radiogroup" aria-label="Размер">${p.sizes.map(s=>`<button class="chip" type="button" role="radio" data-size="${s}" aria-checked="${s===size}" aria-pressed="${s===size}">${s}</button>`).join('')}</div>
+  <p class="pf__err" id="szErr" role="alert"></p>
+  <div class="info__act">${p.drop
+    ?`<a class="btn btn--fill btn--wide" href="index.html#drop">В лист ожидания</a><p class="info__hint">Вещь из Drop 01 ENSO. Продажа откроется 12.12.26, лист ожидания — на сутки раньше.</p>`
+    :`<button class="btn btn--fill btn--wide" type="button" id="buy">В корзину</button>`}</div>
+  <p class="info__hint">Вопрос по размеру или посадке — ответим в Telegram</p>
+  <dl class="spec">${Object.entries(p.spec).map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>`;
+$('#info').addEventListener('click',e=>{const b=e.target.closest('[data-size]');if(!b)return;size=b.dataset.size;$$('[data-size]').forEach(x=>{const on=x===b;x.setAttribute('aria-checked',on);x.setAttribute('aria-pressed',on)});$('#szErr').textContent=''});
+$('#buy')?.addEventListener('click',()=>{if(!size){$('#szErr').textContent='Выберите размер';return}add(p.id,size)});
+const dlg=$('#sizes');
+$('#szBtn')?.addEventListener('click',()=>dlg.showModal());
+dlg.addEventListener('click',e=>{if(e.target===dlg||e.target.closest('[data-close]'))dlg.close()});
+// с чем носить: вещи других категорий; ещё из коллекции: остальное
+const others=PRODUCTS.filter(x=>x.id!==p.id);
+const pair=others.filter(x=>x.cat!==p.cat).sort((a,b)=>(a.cat==='Аксессуары'?-1:0)-(b.cat==='Аксессуары'?-1:0)||a.n-b.n).slice(0,3);
+$('#pair').innerHTML=pair.map(card).join('');
+$('#moreg').innerHTML=others.filter(x=>!pair.includes(x)).slice(0,3).map(card).join('');
+}
+
+</script>
+</body>
+</html>

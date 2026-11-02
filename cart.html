@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Корзина — MORIN</title>
+<link rel="stylesheet" href="css/morin.css">
+</head>
+<body>
+<div id="chrome"></div>
+<main>
+<section class="ptop"><div class="wrap ptop__in"><h1 id="ph1">Корзина</h1><p class="ptop__sub" id="psub">Всё на месте?</p></div></section>
+<section class="paper to-dark "><span class="ink-edge" aria-hidden="true"></span><div class="wrap col">
+<div id="cartv"></div>
+</div></section>
+<section class="pend"><span class="ink-edge ink-edge--up ink-edge--flip" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
+</main>
+<script src="js/morin.js" charset="utf-8"></script>
+<script>
+
+const {byId,rub,$,save}=MORIN;
+function render(){
+  const c=MORIN.cart;
+  if(!c.length){$('#cartv').innerHTML=`<div class="blank"><h2>В корзине пока пусто</h2><a class="btn btn--ink" href="catalog.html">Смотреть коллекцию</a></div>`;$('#psub').hidden=true;return}
+  const total=c.reduce((s,x)=>s+byId(x.id).price*x.qty,0),n=c.reduce((s,x)=>s+x.qty,0);
+  $('#cartv').innerHTML=`<div class="shop">
+   <ul class="lines">${c.map((x,i)=>{const p=byId(x.id);return `<li class="line">
+     <a class="ph" href="product.html?id=${p.id}"><img src="img/${p.img}.jpg" alt="${p.name}"></a>
+     <div><h3><a href="product.html?id=${p.id}">${p.name}</a></h3><p class="line__meta">${p.mat}</p></div>
+     <span class="line__price">${rub(p.price*x.qty)}</span>
+     <div class="line__ctl">
+       <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+         ${p.sizes.length>1?`<label class="sel"><span class="visually-hidden" hidden>Размер</span><select data-i="${i}" aria-label="Размер">${p.sizes.map(s=>`<option${s===x.size?' selected':''}>${s}</option>`).join('')}</select></label>`:`<span class="line__meta" style="margin:0">${x.size}</span>`}
+         <span class="qty"><button type="button" data-q="${i}" data-d="-1" aria-label="Меньше">−</button><output aria-live="polite">${x.qty}</output><button type="button" data-q="${i}" data-d="1" aria-label="Больше">+</button></span>
+       </div>
+       <button class="link" type="button" data-rm="${i}">Убрать</button>
+     </div></li>`}).join('')}</ul>
+   <aside class="sum" aria-label="Итого">
+     <h2>Заказ</h2>
+     <div class="sum__row"><span>Вещи, ${n} шт</span><span>${rub(total)}</span></div>
+     <div class="sum__row"><span>Доставка</span><span>посчитаем при оформлении</span></div>
+     <div class="sum__total"><span>Итого</span><span>${rub(total)}</span></div>
+     <a class="btn btn--fill btn--wide" href="checkout.html">К оформлению</a>
+     <p class="sum__hint">Вопрос по размеру или посадке — ответим в Telegram</p>
+   </aside></div>`;
+}
+document.addEventListener('click',e=>{
+  const q=e.target.closest('[data-q]');const r=e.target.closest('[data-rm]');const c=MORIN.cart;
+  if(q){const it=c[+q.dataset.q];it.qty+=+q.dataset.d;if(it.qty<1)c.splice(+q.dataset.q,1);MORIN.cart=c;render()}
+  if(r){c.splice(+r.dataset.rm,1);MORIN.cart=c;render()}
+});
+document.addEventListener('change',e=>{const s=e.target.closest('select[data-i]');if(!s)return;const c=MORIN.cart;const it=c[+s.dataset.i];const dup=c.find((y,j)=>j!==+s.dataset.i&&y.id===it.id&&y.size===s.value);if(dup){dup.qty+=it.qty;c.splice(+s.dataset.i,1)}else it.size=s.value;MORIN.cart=c;render()});
+render();
+
+</script>
+</body>
+</html>
