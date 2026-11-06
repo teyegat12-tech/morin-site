@@ -40,6 +40,7 @@ const DEFS=`<svg width="0" height="0" style="position:absolute" aria-hidden="tru
 </svg>`;
 const BAG='<path d="M8.5 11.5h13l-1.2 10.5h-10.6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M11.8 12.5V10a3.2 3.2 0 0 1 6.4 0v2.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>';
 const CLOCK='<circle cx="15" cy="15" r="6.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M15 11.2V15l2.6 1.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>';
+const USER='<circle cx="15" cy="12.3" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 23c1.3-4 4-6.2 7.5-6.2s6.2 2.2 7.5 6.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>';
 const NAV=[['catalog.html','一','Коллекция'],['index.html#silhouette','二','Силуэт'],['releases.html','三','Релизы'],['index.html#people','四','Люди'],['index.html#backstage','五','Бэкстейдж']];
 const LOGO='M<img class="logo__o" src="img/logo-enso-o.webp" alt="O">RIN';
 const navHTML=()=>NAV.map(([h,i,t])=>`<a href="${h}"><i>${i}</i>${t}</a>`).join('');
@@ -52,6 +53,7 @@ const CHROME=`${DEFS}
     <nav class="nav" aria-label="Разделы">${navHTML()}</nav>
     <div class="hdr-cta">
       <a class="btn btn--light hdr-wait" href="index.html#drop">Лист ожидания<small>до релиза ENSO</small></a>
+      <a class="txtbtn acct" href="account.html" aria-label="Личный кабинет"><svg class="acct__ico" viewBox="5 5 20 20" aria-hidden="true">${USER}</svg></a>
       <a class="txtbtn cart" href="cart.html" id="cartBtn" aria-label="Корзина"><svg class="cart__ico" viewBox="5 5 20 20" aria-hidden="true">${BAG}</svg><span class="cart__n" id="cartCount">0</span></a>
       <button class="txtbtn menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="menu" aria-label="Меню">${seal('menuCut','M8 10.5h14M8 15h14M8 19.5h9')}</button>
     </div>

@@ -51,11 +51,11 @@ button{font:inherit;color:inherit}
 .btn--ink{color:var(--ink)}
 .btn--ink:hover{color:var(--bone);--bg:var(--ink);--bb:var(--ink)}
 .txtbtn{display:inline-flex;align-items:center;gap:.35em;border:0;background:none;cursor:pointer;font-size:13px;height:46px;padding-inline:10px;opacity:.78}
-.cart__ico{display:block;width:22px;height:22px;filter:url(#wear-fill)}
+.cart__ico,.acct__ico{display:block;width:22px;height:22px;filter:url(#wear-fill)}
 .cart__txt{display:none}
 .cart{gap:6px}
-.cart,.menu-btn{color:var(--bone);opacity:1;transition:color .2s}
-.cart:hover,.menu-btn:hover{color:var(--red)}
+.cart,.menu-btn,.acct{color:var(--bone);opacity:1;transition:color .2s}
+.cart:hover,.menu-btn:hover,.acct:hover{color:var(--red)}
 .seal-ico{display:block;width:22px;height:22px;filter:url(#wear-fill)}
 .cart__n{font-variant-numeric:tabular-nums}
 .txtbtn:hover{opacity:1;color:var(--red)}
@@ -361,10 +361,23 @@ button{font:inherit;color:inherit}
 .ptop h1{margin:0;font-family:var(--f-head);font-weight:600;font-size:clamp(40px,7.2vw,120px);line-height:.95;letter-spacing:-.01em}
 .ptop__sub{margin:22px 0 0;max-width:46ch;color:var(--mute)}
 .ptop--short .ptop__in{padding-top:calc(84px + 40px)}
+body.hdr-on-paper main{background:var(--bone) url(../img/washi.jpg) center/900px}
+.ptop--paper{background:none;color:var(--ink)}
+.ptop--paper .ptop__sub{color:var(--paper-mute)}
+.ptop--paper .ptop__in{padding-top:calc(64px + 48px);padding-bottom:28px}
+.ptop--paper.ptop--compact h1{font-size:clamp(28px,3.4vw,44px)}
+.ptop--paper.ptop--compact .ptop__in{padding-top:calc(64px + 32px);padding-bottom:20px}
+.paper--flush{background:none}
+.paper--flush .col{padding-top:40px;padding-bottom:calc(var(--edge-mid) + 210px)}
+.hdr-on-paper .hdr{color:var(--ink)}
+.hdr-on-paper .hdr .btn--light{color:var(--ink)}
+.hdr-on-paper .cart,.hdr-on-paper .menu-btn,.hdr-on-paper .acct{color:var(--ink)}
+body.hdr-on-paper{--edge-h:190px;--edge-mid:calc(var(--edge-h) * .42)}
 /* низ страницы: подвал на чёрном */
 .pend{position:relative;background:var(--ink) url(../img/noise.webp) 0 0/128px;color:var(--bone)}
 .pend .foot{border-top:0}
 .pend .foot__in{padding-top:max(40px,calc(var(--gap) - var(--edge-mid)))}
+.pend.pend--sm .foot__in{padding-top:24px;padding-bottom:24px}
 .sec-h{margin:0 0 32px;font-family:var(--f-head);font-weight:600;font-size:clamp(24px,2.8vw,40px);line-height:1;letter-spacing:-.01em;filter:url(#print);mix-blend-mode:multiply}
 
 /* ---------- каталог ---------- */

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Личный кабинет — MORIN</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="favicon-16x16.png" type="image/png" sizes="16x16">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="css/morin.css">
+</head>
+<body class="hdr-on-paper">
+<div id="chrome"></div>
+<main>
+<section class="ptop ptop--paper ptop--compact"><div class="wrap ptop__in"><h1 id="ph1">Личный кабинет</h1><p class="ptop__sub" id="psub">Войдите, чтобы видеть заказы и лист ожидания</p></div></section>
+<section class="paper to-dark paper--flush"><div class="wrap col">
+<div style="max-width:420px">
+<form id="acc" novalidate>
+  <fieldset class="fs"><legend>Вход</legend><div class="fs__grid">
+    <label class="pf full" for="accEmail">Email<span class="field"><input id="accEmail" name="email" type="email" placeholder="name@mail.ru" autocomplete="email"></span></label>
+    <label class="pf full" for="accPass">Пароль<span class="field"><input id="accPass" name="pass" type="password" placeholder="••••••••" autocomplete="current-password"></span></label>
+  </div></fieldset>
+  <button class="btn btn--fill btn--wide" type="submit">Войти</button>
+  <p class="sum__hint">Нет аккаунта? <a href="#" id="accReg">Зарегистрироваться</a> · Вопрос — ответим в Telegram</p>
+</form>
+</div>
+</div></section>
+<section class="pend pend--sm"><span class="ink-edge ink-edge--up ink-edge--flip" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
+</main>
+<script src="js/morin.js" charset="utf-8"></script>
+<script>
+const {toast}=MORIN;
+document.getElementById('acc').addEventListener('submit',e=>{e.preventDefault();toast('Личный кабинет скоро откроется')});
+document.getElementById('accReg').addEventListener('click',e=>{e.preventDefault();toast('Регистрация скоро откроется')});
+</script>
+</body>
+</html>
