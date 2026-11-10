@@ -13,26 +13,71 @@
 <body class="hdr-on-paper">
 <div id="chrome"></div>
 <main>
-<section class="ptop ptop--paper ptop--compact"><div class="wrap ptop__in"><h1 id="ph1">Личный кабинет</h1><p class="ptop__sub" id="psub">Войдите, чтобы видеть заказы и лист ожидания</p></div></section>
-<section class="paper to-dark paper--flush"><div class="wrap col">
-<div style="max-width:420px">
-<form id="acc" novalidate>
+<section class="ptop ptop--paper ptop--compact"><div class="wrap ptop__in"><h1 id="ph1">Личный кабинет</h1><p class="ptop__sub" id="psub">С возвращением, Анна</p></div></section>
+<section class="paper paper--flush b-tear"><span class="tear tear--bottom" aria-hidden="true"></span><div class="wrap col">
+<div id="accv"></div>
+</div></section>
+<section class="pend"><span class="foot-stroke" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
+</main>
+<script src="js/morin.js" charset="utf-8"></script>
+<script>
+const {toast,$,rub,byId,seg7,left}=MORIN;
+let inside=true;try{inside=localStorage.getItem('morin-out')!=='1'}catch(e){}
+const ORDERS=[
+  {n:'424 047',date:'30.10.26',items:[['kombinezon-03','M',1]],step:4},
+  {n:'318 902',date:'14.09.26',items:[['tout-05','One size',1],['bodi-06','S',1]],step:5},
+];
+const STEPS=['Ожидает оплаты','Оплачен','Собираем','Передан в доставку','В пути','Доставлен'];
+function order(o,open){
+  const sum=o.items.reduce((s,[id,,q])=>s+byId(id).price*q,0);
+  return `<details class="ord"${open?' open':''}><summary>
+     <span class="ord__n">Заказ № ${o.n}</span><span class="ord__d">${o.date}</span>
+     <span class="ord__s${o.step<5?' is-live':''}">${STEPS[o.step]}${o.step===4?' · трек-номер RU 0417 2263':''}</span><span class="ord__p">${rub(sum)}</span></summary>
+     <ul class="sum__items">${o.items.map(([id,sz,q])=>{const p=byId(id);return `<li><img src="img/${p.img}.jpg" alt=""><span><b><a href="product.html?id=${p.id}">${p.name}</a></b>${sz} · ${q} шт</span><span>${rub(p.price*q)}</span></li>`}).join('')}</ul>
+     <ol class="track track--sm" aria-label="Статус заказа">${STEPS.map((t,i)=>`<li class="${i<=o.step?'on':''}"${i===o.step?' aria-current="step"':''}>${t}</li>`).join('')}</ol>
+   </details>`}
+function dash(){
+  $('#psub').textContent='С возвращением, Анна';
+  $('#accv').innerHTML=`<div class="acc">
+   <div class="acc__main">
+     <section class="acc__box"><h2>Заказы</h2>${ORDERS.map((o,i)=>order(o,i===0)).join('')}</section>
+     <section class="acc__box acc__wait">
+       <img class="acc__seal" src="img/seal-uketsuke.webp" alt="Печать 受付: заявка принята">
+       <h2>Лист ожидания</h2>
+       <p>Drop 01 ENSO — вы в списке. Доступ откроется за сутки до релиза, ссылка придёт в Telegram.</p>
+       <div class="acc__count">до релиза ENSO<svg id="accCount" aria-hidden="true"></svg></div>
+       <a class="link" href="releases.html">Смотреть дроп</a>
+     </section>
+   </div>
+   <aside class="acc__side">
+     <section class="acc__box"><h2>Профиль</h2>
+       <dl class="spec"><div><dt>Имя</dt><dd>Анна К.</dd></div><div><dt>Email</dt><dd>anna.k@mail.ru</dd></div><div><dt>Телефон</dt><dd>+7 900 ··· 45 67</dd></div><div><dt>Telegram</dt><dd>@anna_k</dd></div></dl>
+       <button class="link acc__edit" type="button" data-soon>Изменить</button></section>
+     <section class="acc__box"><h2>Адрес доставки</h2>
+       <p class="acc__addr">Москва, Тверская ул., 7, кв. 12<br><span class="muted">Курьер · по будням после 18:00</span></p>
+       <button class="link acc__edit" type="button" data-soon>Изменить</button></section>
+     <button class="btn btn--ink btn--wide" type="button" id="logout">Выйти</button>
+   </aside></div>`;
+  const tick=()=>{const v=left();seg7($('#accCount'),v.slice(0,3).join(':'))};tick();clearInterval(window._t);window._t=setInterval(tick,30000);
+  $('#logout').addEventListener('click',()=>{set(false)});
+}
+function login(){
+  $('#psub').textContent='Войдите, чтобы видеть заказы и лист ожидания';
+  $('#accv').innerHTML=`<div style="max-width:420px"><form id="acc" novalidate>
   <fieldset class="fs"><legend>Вход</legend><div class="fs__grid">
     <label class="pf full" for="accEmail">Email<span class="field"><input id="accEmail" name="email" type="email" placeholder="name@mail.ru" autocomplete="email"></span></label>
     <label class="pf full" for="accPass">Пароль<span class="field"><input id="accPass" name="pass" type="password" placeholder="••••••••" autocomplete="current-password"></span></label>
   </div></fieldset>
   <button class="btn btn--fill btn--wide" type="submit">Войти</button>
+  <p class="consent">Нажимая «Войти», вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a></p>
   <p class="sum__hint">Нет аккаунта? <a href="#" id="accReg">Зарегистрироваться</a> · Вопрос — ответим в Telegram</p>
-</form>
-</div>
-</div></section>
-<section class="pend pend--sm"><span class="ink-edge ink-edge--up ink-edge--flip" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
-</main>
-<script src="js/morin.js" charset="utf-8"></script>
-<script>
-const {toast}=MORIN;
-document.getElementById('acc').addEventListener('submit',e=>{e.preventDefault();toast('Личный кабинет скоро откроется')});
-document.getElementById('accReg').addEventListener('click',e=>{e.preventDefault();toast('Регистрация скоро откроется')});
+</form></div>`;
+  $('#acc').addEventListener('submit',e=>{e.preventDefault();set(true)});
+  $('#accReg').addEventListener('click',e=>{e.preventDefault();toast('Регистрация скоро откроется')});
+}
+function set(v){inside=v;try{localStorage.setItem('morin-out',v?'0':'1')}catch(e){}v?dash():login();scrollTo({top:0})}
+document.addEventListener('click',e=>{if(e.target.closest('[data-soon]'))toast('Редактирование скоро откроется')});
+inside?dash():login();
 </script>
 </body>
 </html>

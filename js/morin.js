@@ -83,7 +83,7 @@ const CHROME=`${DEFS}
 
 const FOOT=`<div class="wrap foot__in">
   <a class="logo" href="index.html" aria-label="MORIN, на главную">${LOGO}</a>
-  <nav class="foot__links" aria-label="Контакты и документы"><a href="#">Telegram</a><a href="#">Instagram</a><a href="#">Email</a><a href="#">Политика конфиденциальности</a><a href="#">Оферта</a></nav>
+  <nav class="foot__links" aria-label="Контакты и документы"><a href="#" data-demo>Telegram</a><a href="#" data-demo>Instagram</a><a href="#" data-demo>Email</a><a href="privacy.html">Политика конфиденциальности</a><a href="privacy.html#offer">Оферта</a></nav>
   <p class="foot__sign">MORIN — бренд, которого нет. Придумала и собрала Надежда Короткевич</p>
 </div>`;
 
@@ -185,11 +185,14 @@ const menu=$('#menu'),mb=$('#menuBtn');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function menuCount(){const v=left();seg7($('#menuCount'),v.slice(0,3).join(':'))}
 function openMenu(){menuCount();menu.hidden=false;mb.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';requestAnimationFrame(()=>requestAnimationFrame(()=>menu.classList.add('is-open')));setTimeout(()=>$('#menuClose').focus(),reduce?0:500)}
-function closeMenu(){menu.classList.remove('is-open');mb.setAttribute('aria-expanded','false');document.body.style.overflow='';setTimeout(()=>{menu.hidden=true;mb.focus()},reduce?0:650)}
+function closeMenu(){menu.classList.remove('is-open');mb.setAttribute('aria-expanded','false');document.body.style.overflow='';setTimeout(()=>{menu.hidden=true;mb.focus({preventScroll:true})},reduce?0:650)}
 mb.addEventListener('click',openMenu);
 $('#menuClose').addEventListener('click',closeMenu);
-menu.addEventListener('click',e=>{if(e.target===menu||e.target.closest('nav a,.btn'))closeMenu()});
+menu.addEventListener('click',e=>{const a=e.target.closest('nav a,.btn');if(e.target!==menu&&!a)return;
+  let t=null;if(a){const u=new URL(a.href,location.href);if(u.pathname===location.pathname&&u.hash)t=document.getElementById(u.hash.slice(1))}
+  if(t){e.preventDefault();closeMenu();history.replaceState(null,'',a.getAttribute('href').replace(/^[^#]*/,''));requestAnimationFrame(()=>t.scrollIntoView({behavior:reduce?'auto':'smooth'}))}else closeMenu()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!menu.hidden)closeMenu()});
 
+document.addEventListener('click',e=>{const a=e.target.closest('[data-demo]');if(a){e.preventDefault();toast('MORIN — демо-магазин, контакты не подключены')}});
 window.MORIN={seg7,countdown,left,PRODUCTS,byId,rub,$,$$,card,add,toast,save,count,get cart(){return cart},set cart(v){cart=v;save()},BAG,CLOCK};
 })();

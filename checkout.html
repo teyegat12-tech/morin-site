@@ -10,14 +10,14 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="css/morin.css">
 </head>
-<body>
+<body class="hdr-on-paper">
 <div id="chrome"></div>
 <main>
-<section class="ptop"><div class="wrap ptop__in"><h1 id="ph1">Оформление</h1><p class="ptop__sub" id="psub">Без лишних шагов</p></div></section>
-<section class="paper to-dark "><span class="ink-edge" aria-hidden="true"></span><div class="wrap col">
+<section class="ptop ptop--paper"><div class="wrap ptop__in"><h1 id="ph1">Оформление</h1><p class="ptop__sub" id="psub">Без лишних шагов</p></div></section>
+<section class="paper paper--flush b-tear"><span class="tear tear--bottom" aria-hidden="true"></span><div class="wrap col">
 <div id="cov"></div>
 </div></section>
-<section class="pend"><span class="ink-edge ink-edge--up ink-edge--flip" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
+<section class="pend"><span class="foot-stroke" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
 </main>
 <script src="js/morin.js" charset="utf-8"></script>
 <script>
@@ -31,6 +31,7 @@ function summary(){const c=MORIN.cart,total=c.reduce((s,x)=>s+byId(x.id).price*x
   <div class="sum__row"><span>Доставка</span><span>курьер или пункт выдачи</span></div>
   <div class="sum__total"><span>Итого</span><span>${rub(total)}</span></div>
   <button class="btn btn--fill btn--wide" type="submit" form="co">Оплатить</button>
+  <p class="consent">Нажимая «Оплатить», вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a> и <a href="privacy.html#offer">офертой</a></p>
   <p class="sum__hint">Вопрос по размеру или посадке — ответим в Telegram</p></aside>`}
 function form(){
   if(!MORIN.cart.length){$('#cov').innerHTML=`<div class="blank"><h2>В корзине пока пусто</h2><a class="btn btn--ink" href="catalog.html">Смотреть коллекцию</a></div>`;return}

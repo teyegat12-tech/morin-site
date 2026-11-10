@@ -10,11 +10,11 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="css/morin.css">
 </head>
-<body>
+<body class="hdr-on-paper">
 <div id="chrome"></div>
 <main>
-<section class="ptop ptop--short"><div class="wrap ptop__in"><p class="ptop__kick"><a href="catalog.html">Коллекция</a> / <span id="crumb"></span></p><h1 id="ph1"></h1></div></section>
-<section class="paper to-dark "><span class="ink-edge" aria-hidden="true"></span><div class="wrap col">
+<section class="paper paper--flush b-tear"><span class="tear tear--bottom" aria-hidden="true"></span><div class="wrap col prod-top">
+<p class="crumbs"><a href="catalog.html">Коллекция</a> / <span id="crumb"></span></p>
 <div class="prod">
   <div class="gal" id="gal"></div>
   <div class="info" id="info"></div>
@@ -27,7 +27,7 @@
   <table class="tbl"><thead><tr><th>Размер</th><th>Грудь, см</th><th>Талия, см</th><th>Бёдра, см</th></tr></thead>
   <tbody><tr><td>XS</td><td>82</td><td>64</td><td>88</td></tr><tr><td>S</td><td>86</td><td>68</td><td>92</td></tr><tr><td>M</td><td>90</td><td>72</td><td>96</td></tr><tr><td>L</td><td>96</td><td>78</td><td>102</td></tr><tr><td>XL</td><td>102</td><td>84</td><td>108</td></tr></tbody></table>
 </div></dialog>
-<section class="pend"><span class="ink-edge ink-edge--up ink-edge--flip" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
+<section class="pend"><span class="foot-stroke" aria-hidden="true"></span><footer class="foot" data-foot></footer></section>
 </main>
 <script src="js/morin.js" charset="utf-8"></script>
 <script>
@@ -37,7 +37,7 @@ const p=byId(new URLSearchParams(location.search).get('id'));
 if(!p){location.replace('404.html')}
 else{
 document.title=p.name+' — MORIN';
-$('#ph1').textContent=p.name;$('#crumb').textContent=p.name;
+$('#crumb').textContent=p.name;
 const shots=[p.img,p.img+'-d1',p.img+'-d2'];
 let cur=0;
 function gal(){
@@ -49,6 +49,7 @@ let size=p.sizes.length===1?p.sizes[0]:null;
 const one=p.sizes.length===1;
 $('#info').innerHTML=`
   <p class="info__kick"><span>${p.cat}</span>${p.drop?'<span class="tag">Drop 01 ENSO</span>':''}${p.w?'<span>Женская модель</span>':''}</p>
+  <h1 id="ph1">${p.name}</h1>
   <p class="info__mat">${p.mat}</p>
   <p class="info__price">${rub(p.price)}</p>
   <p class="info__desc">${p.desc}</p>
