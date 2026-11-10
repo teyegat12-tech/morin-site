@@ -738,3 +738,14 @@ body.hdr-on-paper{--edge-h:10.83vw;--edge-mid:calc(var(--edge-h) * .45)}
 .foot-stroke{top:-2.95vw}
 @media (max-width:720px){.foot-stroke{top:-6.2vw;width:150%;height:9.4vw}}
 @media (max-width:720px){.foot-stroke{top:-3.4vw}}
+
+/* ---------- v4 · строгий низ героя (10.11.2026) ---------- */
+.hero .ink-edge--hero,.hero__shade::after{display:none}
+.hero__grain,.hero__scan,.hero::after{-webkit-mask-image:none;mask-image:none}
+.hero__shade{background:linear-gradient(0deg,rgba(11,13,18,.2) 0,rgba(11,13,18,0) 10vw),linear-gradient(90deg,rgba(11,13,18,.7) 0%,rgba(11,13,18,.15) 45%,rgba(11,13,18,0) 70%),linear-gradient(180deg,rgba(11,13,18,.55) 0%,rgba(11,13,18,0) 18%)}
+@media (max-width:720px){
+  .hero__grain,.hero__scan,.hero::after{-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 20vw),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 20vw),transparent)}
+  .hero__shade{background:linear-gradient(180deg,rgba(11,13,18,.6) 0%,rgba(11,13,18,0) 22%,rgba(11,13,18,0) 60%,#0B0D12 100%)}
+}
+#collection .pline--hero{height:calc(100vw * 369 / 2400);top:calc(100vw * -144 / 2400);transform:none;z-index:5;-webkit-mask:url(../img/hero-brush.webp) 0 0/100% 100% no-repeat;mask:url(../img/hero-brush.webp) 0 0/100% 100% no-repeat}
+#collection.t-tear .col{padding-top:calc(100vw * 145 / 2400 + var(--gap) * .8)}
