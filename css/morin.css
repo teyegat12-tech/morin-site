@@ -749,3 +749,35 @@ body.hdr-on-paper{--edge-h:10.83vw;--edge-mid:calc(var(--edge-h) * .45)}
 }
 #collection .pline--hero{height:calc(100vw * 369 / 2400);top:calc(100vw * -144 / 2400);transform:none;z-index:5;-webkit-mask:url(../img/hero-brush.webp) 0 0/100% 100% no-repeat;mask:url(../img/hero-brush.webp) 0 0/100% 100% no-repeat}
 #collection.t-tear .col{padding-top:calc(100vw * 145 / 2400 + var(--gap) * .8)}
+
+
+/* ---------- v5 · анимации (13.11.2026) ---------- */
+/* шёлк под пальто: фонарик-курсор */
+@property --sr{syntax:'<length>';inherits:true;initial-value:0px}
+.hero__silk{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%;z-index:1;pointer-events:none;
+  --sr:0px;-webkit-mask-image:radial-gradient(circle var(--sr) at var(--mx,50%) var(--my,50%),#000 0 35%,rgba(0,0,0,.6) 60%,transparent 100%);mask-image:radial-gradient(circle var(--sr) at var(--mx,50%) var(--my,50%),#000 0 35%,rgba(0,0,0,.6) 60%,transparent 100%);
+  transition:--sr .55s cubic-bezier(.3,.7,.2,1);filter:saturate(.95) contrast(1.05)}
+.hero.is-silk .hero__silk{--sr:140px}
+.hero__silk.is-glimpse{animation:glimpse 2.4s cubic-bezier(.4,0,.2,1) both}
+@keyframes glimpse{0%{--sr:0px}35%{--sr:140px}60%{--sr:140px}100%{--sr:0px}}
+@media (max-width:720px){.hero__silk{position:absolute;inset:0 0 auto 0;height:min(118vw,560px)}@keyframes glimpse{0%{--sr:0px}35%{--sr:105px}60%{--sr:105px}100%{--sr:0px}}}
+.hero__glitch,.hero__scan,.hero__grain,.hero__shade{z-index:2}
+
+/* мазки рисуются кистью: второй слой маски — голова кисти с рваным краем едет слева направо */
+html.anim .pline,html.anim .tear,html.anim .foot-stroke{
+  -webkit-mask-size:100% 100%,200% 100%;mask-size:100% 100%,200% 100%;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:0 0,100% 0;mask-position:0 0,100% 0;
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+  transition:-webkit-mask-position 1.25s cubic-bezier(.45,.05,.3,1),mask-position 1.25s cubic-bezier(.45,.05,.3,1)}
+html.anim .pline{-webkit-mask-image:url(../img/paint-edge.webp),url(../img/brush-sweep.webp);mask-image:url(../img/paint-edge.webp),url(../img/brush-sweep.webp)}
+html.anim #collection .pline--hero{-webkit-mask-image:url(../img/hero-brush.webp),url(../img/brush-sweep.webp);mask-image:url(../img/hero-brush.webp),url(../img/brush-sweep.webp);-webkit-mask-size:100% 100%,200% 100%;mask-size:100% 100%,200% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0 0,100% 0;mask-position:0 0,100% 0;-webkit-mask-composite:source-in;mask-composite:intersect;transition:-webkit-mask-position 1.6s cubic-bezier(.45,.05,.3,1),mask-position 1.6s cubic-bezier(.45,.05,.3,1)}
+html.anim #collection .pline--hero.is-drawn{-webkit-mask-position:0 0,0 0;mask-position:0 0,0 0}
+html.anim .tear{-webkit-mask-image:url(../img/tear.webp),url(../img/brush-sweep.webp);mask-image:url(../img/tear.webp),url(../img/brush-sweep.webp);transition-duration:1s}
+html.anim .foot-stroke{-webkit-mask-image:url(../img/foot-stroke.webp),url(../img/brush-sweep.webp);mask-image:url(../img/foot-stroke.webp),url(../img/brush-sweep.webp);transition-duration:1.1s}
+html.anim .is-drawn{-webkit-mask-position:0 0,0 0;mask-position:0 0,0 0}
+
+/* печати штампуются по очереди: тум-тум-тум */
+html.anim .js-stamp{opacity:0}
+html.anim .js-stamp.is-in{animation:stampHit .26s cubic-bezier(.3,1.4,.5,1) both}
+@keyframes stampHit{0%{opacity:0;scale:1.7}60%{opacity:1;scale:.92}100%{opacity:1;scale:1}}

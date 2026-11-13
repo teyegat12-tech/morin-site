@@ -196,3 +196,51 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!menu.hidden)closeM
 document.addEventListener('click',e=>{const a=e.target.closest('[data-demo]');if(a){e.preventDefault();toast('MORIN — демо-магазин, контакты не подключены')}});
 window.MORIN={seg7,countdown,left,PRODUCTS,byId,rub,$,$$,card,add,toast,save,count,get cart(){return cart},set cart(v){cart=v;save()},BAG,CLOCK};
 })();
+
+/* ---------- анимации ---------- */
+(function(){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce||!('IntersectionObserver' in window))return;
+  document.documentElement.classList.add('anim');
+  // мазки: рисуются, когда переход дошёл до нижней трети экрана
+  // краска перекрывает край тёмного блока: до прорисовки там бумага, кисть закрашивает её
+  const unders=new Map();
+  const placeUnder=el=>{const u=unders.get(el);if(!u)return;const par=el.offsetParent;if(!par)return;const r=el.getBoundingClientRect(),pr=par.getBoundingClientRect();
+    const top=r.top-pr.top,h=Math.max(0,Math.min(r.bottom,pr.top)-r.top);u.style.cssText=`position:absolute;left:0;width:100%;top:${top}px;height:${h+1}px;z-index:2;pointer-events:none;background:var(--bone) url(img/washi.jpg) center/900px;transition:opacity .35s`};
+  addEventListener('resize',()=>unders.forEach((u,el)=>placeUnder(el)));
+  const draw=el=>{el.classList.add('is-drawn');const u=unders.get(el);if(u){const end=()=>{u.style.opacity=0;setTimeout(()=>u.remove(),400);unders.delete(el)};el.addEventListener('transitionend',end,{once:true});setTimeout(()=>unders.has(el)&&end(),2200)}};
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);draw(e.target)}),{rootMargin:'0px 0px -22% 0px',threshold:.2});
+  // печати: очередь, ставятся по одной — тум-тум-тум
+  const q=[];let busy=false;
+  const play=()=>{if(!q.length){busy=false;return}busy=true;q.shift().classList.add('is-in');setTimeout(play,190)};
+  const so=new IntersectionObserver(es=>{const vis=es.filter(e=>e.isIntersecting).map(e=>e.target);vis.forEach(t=>so.unobserve(t));
+    vis.sort((x,y)=>{const a=x.getBoundingClientRect(),b=y.getBoundingClientRect();return (a.top-b.top)||(a.left-b.left)});q.push(...vis);if(!busy)setTimeout(play,150)},{rootMargin:'0px 0px -15% 0px',threshold:.6});
+  const STAMP='.gentei,.drop__photo .stamp,.notes__seal,.acc__seal,.done__seal';
+  const scan=root=>{
+    root.querySelectorAll('.pline,.tear,.foot-stroke').forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;if(el.matches('.pline--hero'))return;if(el.matches('.pline--top')){const u=document.createElement('span');u.setAttribute('aria-hidden','true');el.before(u);unders.set(el,u);placeUnder(el)}io.observe(el)});
+    root.querySelectorAll(STAMP).forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;el.classList.add('js-stamp');so.observe(el)});
+  };
+  scan(document);
+  new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1&&n.querySelectorAll)scan(n)}))).observe(document.body,{childList:true,subtree:true});
+  // мазок под первым экраном рисуется после загрузки
+  const hb=document.querySelector('.pline--hero');if(hb)setTimeout(()=>hb.classList.add('is-drawn'),700);
+
+  // шёлк под пальто
+  const hero=document.querySelector('.hero'),silk=document.getElementById('silk');
+  if(!hero||!silk)return;
+  const NW=1128,NH=1400,COAT=[[565,620],[560,760],[575,900],[560,1040]];
+  const coatPt=k=>{const r=silk.getBoundingClientRect();const sc=Math.max(r.width/NW,r.height/NH);const ox=(r.width-NW*sc)*.5,oy=(r.height-NH*sc)*.35;const [x,y]=COAT[k%COAT.length];return [ox+x*sc,oy+y*sc]};
+  const setPt=(x,y)=>{silk.style.setProperty('--mx',x+'px');silk.style.setProperty('--my',y+'px')};
+  const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  let used=false,k=0;
+  const glimpse=()=>{if(used&&fine)return;const [x,y]=coatPt(k++);setPt(x,y);silk.classList.remove('is-glimpse');void silk.offsetWidth;silk.classList.add('is-glimpse')};
+  if(fine){
+    hero.addEventListener('pointermove',e=>{const r=silk.getBoundingClientRect();setPt(e.clientX-r.left,e.clientY-r.top);if(!used){used=true;silk.classList.remove('is-glimpse')}hero.classList.add('is-silk')});
+    hero.addEventListener('pointerleave',()=>hero.classList.remove('is-silk'));
+    setTimeout(glimpse,2600);
+  }else{
+    setTimeout(glimpse,2200);
+    let t=setInterval(()=>{const r=hero.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)glimpse()},7000);
+    hero.addEventListener('click',e=>{if(e.target.closest('a,button'))return;const r=silk.getBoundingClientRect();setPt(e.clientX-r.left,e.clientY-r.top);silk.classList.remove('is-glimpse');void silk.offsetWidth;silk.classList.add('is-glimpse')});
+  }
+})();
