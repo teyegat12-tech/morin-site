@@ -216,15 +216,18 @@ window.MORIN={seg7,countdown,left,PRODUCTS,byId,rub,$,$$,card,add,toast,save,cou
   const play=()=>{if(!q.length){busy=false;return}busy=true;q.shift().classList.add('is-in');setTimeout(play,190)};
   const so=new IntersectionObserver(es=>{const vis=es.filter(e=>e.isIntersecting).map(e=>e.target);vis.forEach(t=>{so.unobserve(t);pendS.delete(t)});
     vis.sort((x,y)=>{const a=x.getBoundingClientRect(),b=y.getBoundingClientRect();return (a.top-b.top)||(a.left-b.left)});q.push(...vis);if(!busy){busy=true;setTimeout(play,performance.now()-t0<1500?900:120)}},{rootMargin:'0px 0px -33% 0px',threshold:1});
+  // печать-оттиск в «Бэкстейдже» — большая, как фото: ставится, как только блок показался на экране
+  const sb=new IntersectionObserver(es=>{const vis=es.filter(e=>e.isIntersecting).map(e=>e.target);vis.forEach(t=>{sb.unobserve(t);pendS.delete(t)});
+    q.push(...vis);if(vis.length&&!busy){busy=true;setTimeout(play,performance.now()-t0<1500?900:120)}},{rootMargin:'0px 0px -4% 0px',threshold:.15});
   const STAMP='.gentei,.drop__photo .stamp,.notes__seal,.acc__seal,.done__seal';
   const scan=root=>{
     root.querySelectorAll('.pline,.foot-stroke').forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;if(el.matches('.pline--hero'))return;if(el.matches('.pline--top')){const u=document.createElement('span');u.setAttribute('aria-hidden','true');el.before(u);unders.set(el,u);placeUnder(el)}pend.add(el);io.observe(el)});
-    root.querySelectorAll(STAMP).forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;el.classList.add('js-stamp');pendS.add(el);so.observe(el)});
+    root.querySelectorAll(STAMP).forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;el.classList.add('js-stamp');pendS.add(el);(el.matches('.notes__seal')?sb:so).observe(el)});
   };
   scan(document);
   new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1&&n.querySelectorAll)scan(n)}))).observe(document.body,{childList:true,subtree:true});
   // конец страницы: края, которые уже не доедут до нижней трети экрана (подвал), дорисовываются сразу
-  const atEnd=()=>{if(innerHeight+scrollY<document.documentElement.scrollHeight-4)return;pend.forEach(el=>{const r=el.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0){io.unobserve(el);draw(el)}});const v=[...pendS].filter(el=>{const r=el.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0&&r.width>0});if(v.length){v.forEach(el=>{so.unobserve(el);pendS.delete(el)});q.push(...v);if(!busy){busy=true;setTimeout(play,performance.now()-t0<1500?900:120)}}};
+  const atEnd=()=>{if(innerHeight+scrollY<document.documentElement.scrollHeight-4)return;pend.forEach(el=>{const r=el.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0){io.unobserve(el);draw(el)}});const v=[...pendS].filter(el=>{const r=el.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0&&r.width>0});if(v.length){v.forEach(el=>{so.unobserve(el);sb.unobserve(el);pendS.delete(el)});q.push(...v);if(!busy){busy=true;setTimeout(play,performance.now()-t0<1500?900:120)}}};
   addEventListener('scroll',atEnd,{passive:true});addEventListener('load',atEnd);
   // мазок под первым экраном рисуется после загрузки
   const hb=document.querySelector('.pline--hero');if(hb)setTimeout(()=>hb.classList.add('is-drawn'),700);
