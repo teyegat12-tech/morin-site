@@ -83,7 +83,7 @@ const CHROME=`${DEFS}
 
 const FOOT=`<div class="wrap foot__in">
   <a class="logo" href="index.html" aria-label="MORIN, на главную">${LOGO}</a>
-  <nav class="foot__links" aria-label="Контакты и документы"><a href="#" data-demo>Telegram</a><a href="#" data-demo>Instagram</a><a href="#" data-demo>Email</a><a href="privacy.html">Политика конфиденциальности</a><a href="privacy.html#offer">Оферта</a></nav>
+  <nav class="foot__links" aria-label="Контакты и документы"><a href="#" data-demo>Telegram</a><a href="#" data-demo>Instagram</a><a href="#" data-demo>Email</a><a href="privacy.html">Политика конфиденциальности</a><a href="offer.html">Оферта</a></nav>
   <p class="foot__sign">MORIN — бренд, которого нет. Придумала и собрала Надежда Короткевич</p>
 </div>`;
 
@@ -212,19 +212,19 @@ window.MORIN={seg7,countdown,left,PRODUCTS,byId,rub,$,$$,card,add,toast,save,cou
   const draw=el=>{pend.delete(el);el.classList.add('is-drawn');const u=unders.get(el);if(u){const end=()=>{u.style.opacity=0;setTimeout(()=>u.remove(),400);unders.delete(el)};el.addEventListener('transitionend',end,{once:true});setTimeout(()=>unders.has(el)&&end(),2200)}};
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);draw(e.target)}),{rootMargin:'0px 0px -6% 0px',threshold:.05});
   // печати: очередь, ставятся по одной — тум-тум-тум
-  const q=[];let busy=false;
+  const q=[];let busy=false;const t0=performance.now();const pendS=new Set();
   const play=()=>{if(!q.length){busy=false;return}busy=true;q.shift().classList.add('is-in');setTimeout(play,190)};
-  const so=new IntersectionObserver(es=>{const vis=es.filter(e=>e.isIntersecting).map(e=>e.target);vis.forEach(t=>so.unobserve(t));
-    vis.sort((x,y)=>{const a=x.getBoundingClientRect(),b=y.getBoundingClientRect();return (a.top-b.top)||(a.left-b.left)});q.push(...vis);if(!busy)setTimeout(play,150)},{rootMargin:'0px 0px -15% 0px',threshold:.6});
+  const so=new IntersectionObserver(es=>{const vis=es.filter(e=>e.isIntersecting).map(e=>e.target);vis.forEach(t=>{so.unobserve(t);pendS.delete(t)});
+    vis.sort((x,y)=>{const a=x.getBoundingClientRect(),b=y.getBoundingClientRect();return (a.top-b.top)||(a.left-b.left)});q.push(...vis);if(!busy){busy=true;setTimeout(play,performance.now()-t0<1500?900:120)}},{rootMargin:'0px 0px -33% 0px',threshold:1});
   const STAMP='.gentei,.drop__photo .stamp,.notes__seal,.acc__seal,.done__seal';
   const scan=root=>{
-    root.querySelectorAll('.pline,.tear,.foot-stroke').forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;if(el.matches('.pline--hero'))return;if(el.matches('.pline--top')){const u=document.createElement('span');u.setAttribute('aria-hidden','true');el.before(u);unders.set(el,u);placeUnder(el)}pend.add(el);io.observe(el)});
-    root.querySelectorAll(STAMP).forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;el.classList.add('js-stamp');so.observe(el)});
+    root.querySelectorAll('.pline,.foot-stroke').forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;if(el.matches('.pline--hero'))return;if(el.matches('.pline--top')){const u=document.createElement('span');u.setAttribute('aria-hidden','true');el.before(u);unders.set(el,u);placeUnder(el)}pend.add(el);io.observe(el)});
+    root.querySelectorAll(STAMP).forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;el.classList.add('js-stamp');pendS.add(el);so.observe(el)});
   };
   scan(document);
   new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1&&n.querySelectorAll)scan(n)}))).observe(document.body,{childList:true,subtree:true});
   // конец страницы: края, которые уже не доедут до нижней трети экрана (подвал), дорисовываются сразу
-  const atEnd=()=>{if(innerHeight+scrollY<document.documentElement.scrollHeight-4)return;pend.forEach(el=>{const r=el.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0){io.unobserve(el);draw(el)}})};
+  const atEnd=()=>{if(innerHeight+scrollY<document.documentElement.scrollHeight-4)return;pend.forEach(el=>{const r=el.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0){io.unobserve(el);draw(el)}});const v=[...pendS].filter(el=>{const r=el.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0&&r.width>0});if(v.length){v.forEach(el=>{so.unobserve(el);pendS.delete(el)});q.push(...v);if(!busy){busy=true;setTimeout(play,performance.now()-t0<1500?900:120)}}};
   addEventListener('scroll',atEnd,{passive:true});addEventListener('load',atEnd);
   // мазок под первым экраном рисуется после загрузки
   const hb=document.querySelector('.pline--hero');if(hb)setTimeout(()=>hb.classList.add('is-drawn'),700);

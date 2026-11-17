@@ -103,7 +103,7 @@ button{font:inherit;color:inherit}
 .enso{position:absolute;left:50%;top:50%;width:min(66vh,620px);aspect-ratio:1;transform:translate(-28%,-54%) rotate(-8deg);pointer-events:none;z-index:2}
 @media (prefers-reduced-motion:no-preference){
   .enso{animation:ensoIn 1.4s cubic-bezier(.6,0,.2,1) .2s both}
-  .stamp{animation:stampIn .32s cubic-bezier(.3,1.5,.5,1) 1.55s both}
+  .hero .stamp{animation:stampIn .32s cubic-bezier(.3,1.5,.5,1) 1.55s both}
 }
 @keyframes ensoIn{from{clip-path:circle(0% at 70% 15%)}to{clip-path:circle(150% at 70% 15%)}}
 @keyframes stampIn{from{transform:scale(1.5) rotate(-6deg);opacity:0}to{transform:none;opacity:1}}
@@ -793,3 +793,7 @@ html.anim .js-stamp.is-in{animation:stampHit .26s cubic-bezier(.3,1.4,.5,1) both
 }
 /* финал и подвал на главной — один чёрный блок, без разделительной линии */
 .final .foot{border-top:0}
+/* рваный край бумаги над подвалом не анимируется: рисуется только мазок, в одну сторону */
+html.anim .tear{-webkit-mask-image:url(../img/tear.webp);mask-image:url(../img/tear.webp);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-position:0 0;mask-position:0 0;-webkit-mask-composite:source-over;mask-composite:add;transition:none}
+/* печати спрятаны с самого начала, до запуска скрипта — без вспышки перед ударом */
+html.anim :is(.gentei,.drop__photo .stamp,.notes__seal,.acc__seal,.done__seal):not(.is-in){opacity:0}

@@ -9,6 +9,7 @@
 <link rel="icon" href="favicon-16x16.png" type="image/png" sizes="16x16">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="css/morin.css">
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&'IntersectionObserver' in window)document.documentElement.classList.add('anim')</script>
 </head>
 <body class="hdr-on-paper">
 <div id="chrome"></div>
@@ -31,7 +32,7 @@ function summary(){const c=MORIN.cart,total=c.reduce((s,x)=>s+byId(x.id).price*x
   <div class="sum__row"><span>Доставка</span><span>курьер или пункт выдачи</span></div>
   <div class="sum__total"><span>Итого</span><span>${rub(total)}</span></div>
   <button class="btn btn--fill btn--wide" type="submit" form="co">Оплатить</button>
-  <p class="consent">Нажимая «Оплатить», вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a> и <a href="privacy.html#offer">офертой</a></p>
+  <p class="consent">Нажимая «Оплатить», вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a> и <a href="offer.html">офертой</a></p>
   <p class="sum__hint">Вопрос по размеру или посадке — ответим в Telegram</p></aside>`}
 function form(){
   if(!MORIN.cart.length){$('#cov').innerHTML=`<div class="blank"><h2>В корзине пока пусто</h2><a class="btn btn--ink" href="catalog.html">Смотреть коллекцию</a></div>`;return}
