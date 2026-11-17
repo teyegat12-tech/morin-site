@@ -208,7 +208,8 @@ window.MORIN={seg7,countdown,left,PRODUCTS,byId,rub,$,$$,card,add,toast,save,cou
   const placeUnder=el=>{const u=unders.get(el);if(!u)return;const par=el.offsetParent;if(!par)return;const r=el.getBoundingClientRect(),pr=par.getBoundingClientRect();
     const top=r.top-pr.top,h=Math.max(0,Math.min(r.bottom,pr.top)-r.top);u.style.cssText=`position:absolute;left:0;width:100%;top:${top}px;height:${h+1}px;z-index:2;pointer-events:none;background:var(--bone) url(img/washi.jpg) center/900px;transition:opacity .35s`};
   addEventListener('resize',()=>unders.forEach((u,el)=>placeUnder(el)));
-  const draw=el=>{el.classList.add('is-drawn');const u=unders.get(el);if(u){const end=()=>{u.style.opacity=0;setTimeout(()=>u.remove(),400);unders.delete(el)};el.addEventListener('transitionend',end,{once:true});setTimeout(()=>unders.has(el)&&end(),2200)}};
+  const pend=new Set();
+  const draw=el=>{pend.delete(el);el.classList.add('is-drawn');const u=unders.get(el);if(u){const end=()=>{u.style.opacity=0;setTimeout(()=>u.remove(),400);unders.delete(el)};el.addEventListener('transitionend',end,{once:true});setTimeout(()=>unders.has(el)&&end(),2200)}};
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);draw(e.target)}),{rootMargin:'0px 0px -22% 0px',threshold:.2});
   // печати: очередь, ставятся по одной — тум-тум-тум
   const q=[];let busy=false;
@@ -217,11 +218,14 @@ window.MORIN={seg7,countdown,left,PRODUCTS,byId,rub,$,$$,card,add,toast,save,cou
     vis.sort((x,y)=>{const a=x.getBoundingClientRect(),b=y.getBoundingClientRect();return (a.top-b.top)||(a.left-b.left)});q.push(...vis);if(!busy)setTimeout(play,150)},{rootMargin:'0px 0px -15% 0px',threshold:.6});
   const STAMP='.gentei,.drop__photo .stamp,.notes__seal,.acc__seal,.done__seal';
   const scan=root=>{
-    root.querySelectorAll('.pline,.tear,.foot-stroke').forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;if(el.matches('.pline--hero'))return;if(el.matches('.pline--top')){const u=document.createElement('span');u.setAttribute('aria-hidden','true');el.before(u);unders.set(el,u);placeUnder(el)}io.observe(el)});
+    root.querySelectorAll('.pline,.tear,.foot-stroke').forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;if(el.matches('.pline--hero'))return;if(el.matches('.pline--top')){const u=document.createElement('span');u.setAttribute('aria-hidden','true');el.before(u);unders.set(el,u);placeUnder(el)}pend.add(el);io.observe(el)});
     root.querySelectorAll(STAMP).forEach(el=>{if(el.dataset.a)return;el.dataset.a=1;el.classList.add('js-stamp');so.observe(el)});
   };
   scan(document);
   new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1&&n.querySelectorAll)scan(n)}))).observe(document.body,{childList:true,subtree:true});
+  // конец страницы: края, которые уже не доедут до нижней трети экрана (подвал), дорисовываются сразу
+  const atEnd=()=>{if(innerHeight+scrollY<document.documentElement.scrollHeight-4)return;pend.forEach(el=>{const r=el.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0){io.unobserve(el);draw(el)}})};
+  addEventListener('scroll',atEnd,{passive:true});addEventListener('load',atEnd);
   // мазок под первым экраном рисуется после загрузки
   const hb=document.querySelector('.pline--hero');if(hb)setTimeout(()=>hb.classList.add('is-drawn'),700);
 
