@@ -797,3 +797,8 @@ html.anim .js-stamp.is-in{animation:stampHit .26s cubic-bezier(.3,1.4,.5,1) both
 html.anim .tear{-webkit-mask-image:url(../img/tear.webp);mask-image:url(../img/tear.webp);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-position:0 0;mask-position:0 0;-webkit-mask-composite:source-over;mask-composite:add;transition:none}
 /* печати спрятаны с самого начала, до запуска скрипта — без вспышки перед ударом */
 html.anim :is(.gentei,.drop__photo .stamp,.notes__seal,.acc__seal,.done__seal):not(.is-in){opacity:0}
+/* 17.11.2026: один размер заголовка на всех внутренних страницах (каталог, вещь, корзина, кабинет и т. д.) */
+.ptop h1,.ptop--paper.ptop--compact h1,.info h1{font-size:clamp(28px,3.4vw,52px);line-height:1.02}
+@media (max-width:720px){.ptop h1,.ptop--paper.ptop--compact h1,.info h1{font-size:clamp(26px,8vw,34px)}}
+/* заголовки на бумаге — «плохо пропечатаны», как в гайде, не ровная чёрная заливка */
+.ptop--paper h1,.acc h2,.sum h2,.blank h2,.empty h3,.rel__t{filter:url(#print);mix-blend-mode:multiply}
