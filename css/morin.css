@@ -781,3 +781,15 @@ html.anim .is-drawn{-webkit-mask-position:0 0,0 0;mask-position:0 0,0 0}
 html.anim .js-stamp{opacity:0}
 html.anim .js-stamp.is-in{animation:stampHit .26s cubic-bezier(.3,1.4,.5,1) both}
 @keyframes stampHit{0%{opacity:0;scale:1.7}60%{opacity:1;scale:.92}100%{opacity:1;scale:1}}
+
+/* 17.11.2026: единый боковой отступ на десктопе, контент к краям (без ограничения 1400 px) */
+@media (min-width:721px){
+  :root{--gut:max(clamp(32px,3.3vw,64px),env(safe-area-inset-left,0px));--gut-r:max(clamp(32px,3.3vw,64px),env(safe-area-inset-right,0px))}
+  .wrap{max-width:none}
+  .datestamp{right:var(--gut-r)}
+  .doc{right:var(--gut-r)}
+  .reg--tl,.reg--bl{left:12px}.reg--tr,.reg--br{right:12px}
+  .hero__content,.doc,.reg--bl,.reg--br{bottom:calc(var(--rise-h) * .78 + 24px - 100px)}
+}
+/* финал и подвал на главной — один чёрный блок, без разделительной линии */
+.final .foot{border-top:0}

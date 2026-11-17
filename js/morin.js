@@ -202,7 +202,7 @@ window.MORIN={seg7,countdown,left,PRODUCTS,byId,rub,$,$$,card,add,toast,save,cou
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce||!('IntersectionObserver' in window))return;
   document.documentElement.classList.add('anim');
-  // мазки: рисуются, когда переход дошёл до нижней трети экрана
+  // мазки: рисуются, как только переход показался снизу экрана
   // краска перекрывает край тёмного блока: до прорисовки там бумага, кисть закрашивает её
   const unders=new Map();
   const placeUnder=el=>{const u=unders.get(el);if(!u)return;const par=el.offsetParent;if(!par)return;const r=el.getBoundingClientRect(),pr=par.getBoundingClientRect();
@@ -210,7 +210,7 @@ window.MORIN={seg7,countdown,left,PRODUCTS,byId,rub,$,$$,card,add,toast,save,cou
   addEventListener('resize',()=>unders.forEach((u,el)=>placeUnder(el)));
   const pend=new Set();
   const draw=el=>{pend.delete(el);el.classList.add('is-drawn');const u=unders.get(el);if(u){const end=()=>{u.style.opacity=0;setTimeout(()=>u.remove(),400);unders.delete(el)};el.addEventListener('transitionend',end,{once:true});setTimeout(()=>unders.has(el)&&end(),2200)}};
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);draw(e.target)}),{rootMargin:'0px 0px -22% 0px',threshold:.2});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);draw(e.target)}),{rootMargin:'0px 0px -6% 0px',threshold:.05});
   // печати: очередь, ставятся по одной — тум-тум-тум
   const q=[];let busy=false;
   const play=()=>{if(!q.length){busy=false;return}busy=true;q.shift().classList.add('is-in');setTimeout(play,190)};
